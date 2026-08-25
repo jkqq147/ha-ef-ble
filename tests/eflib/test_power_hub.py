@@ -94,7 +94,7 @@ async def test_power_hub_mppt_record(device):
     payload = bytearray(136)
     struct.pack_into("<i", payload, 28, 53609)
     struct.pack_into("<i", payload, 32, -1690)
-    struct.pack_into("<i", payload, 36, -90)
+    struct.pack_into("<i", payload, 36, -90600)  # milliwatts
     struct.pack_into("<i", payload, 40, 34200)
     struct.pack_into("<i", payload, 44, 2651)
     struct.pack_into("<i", payload, 48, 90)
@@ -110,6 +110,7 @@ async def test_power_hub_mppt_record(device):
     assert processed is True
     assert device.battery_voltage == 53.609
     assert device.battery_current == -1.69
+    assert device.battery_power == -90.6
     assert device.pv_voltage_1 == 34.2
     assert device.pv_current_1 == 2.651
     assert device.pv_power_1 == 90

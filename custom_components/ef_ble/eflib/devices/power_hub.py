@@ -40,6 +40,12 @@ class Device(DeviceBase, RawDataProps):
     pv_heatsink_temperature_2 = raw_field(mppt.heatsink_temperature_2)
     pcb_temperature = raw_field(mppt.pcb_temperature)
 
+    # PowerHubMpptData parses battery_power but nothing mapped it, so the only
+    # view of charge into the pack was inferring it from battery_voltage x
+    # battery_current. The raw value is in MILLIWATTS, matching the mV/mA
+    # convention of the fields above.
+    battery_power = raw_field(mppt.battery_power, pdiv(1000, 1))
+
     battery_enabled = field_group(
         lambda _: Field[bool](), 3, name_template="battery_{n}_enabled"
     )
